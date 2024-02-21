@@ -3,10 +3,15 @@ package com.lambdatest;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
@@ -54,67 +59,41 @@ public class TestNGTodo2 {
     }
 
     @Test
-    public void basicTest() throws InterruptedException {
-        String spanText;
-        System.out.println("Loading Url");
+    public void Scanario_2() throws InterruptedException {
+        driver.manage().window().maximize();
+        //1. Open the https://www.lambdatest.com/selenium-playground page and click “Drag & Drop Sliders” under “Progress Bars & Sliders”
+        driver.get("https://www.lambdatest.com/selenium-playground");
 
-        driver.get("https://lambdatest.github.io/sample-todo-app/");
+        driver.findElement(By.linkText("Drag & Drop Sliders")).click();
+        Thread.sleep(1000);
 
-        System.out.println("Checking Box");
-        driver.findElement(By.name("li1")).click();
 
-        System.out.println("Checking Another Box");
-        driver.findElement(By.name("li2")).click();
 
-        System.out.println("Checking Box");
-        driver.findElement(By.name("li3")).click();
+        WebElement slider = driver.findElement(By.xpath("//input[@value='15']"));
+        // Simulate dragging the slider to move it
+        Actions sliderAction = new Actions(driver);
+        sliderAction.clickAndHold(slider).moveByOffset(212, 0).release().perform();
 
-        System.out.println("Checking Another Box");
-        driver.findElement(By.name("li4")).click();
+        // Wait for the slider to be adjusted
+        Thread.sleep(1000);
 
-        driver.findElement(By.id("sampletodotext")).sendKeys(" List Item 6");
-        driver.findElement(By.id("addbutton")).click();
 
-        driver.findElement(By.id("sampletodotext")).sendKeys(" List Item 7");
-        driver.findElement(By.id("addbutton")).click();
+        WebElement rangeValue = driver.findElement(By.xpath("//output[@id='rangeSuccess']"));
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//output[@id='rangeSuccess']")));
+        int currentValue = Integer.parseInt(rangeValue.getText());
+        System.out.println("current value is : "+ currentValue);
+        if (currentValue == 95) {
+            System.out.println("Slider validation passed for  Scenario 2");
+        } else {
+            System.out.println("Slider validation failed for Scenario 2");
+        }
 
-        driver.findElement(By.id("sampletodotext")).sendKeys(" List Item 8");
-        driver.findElement(By.id("addbutton")).click();
-
-        System.out.println("Checking Another Box");
-        driver.findElement(By.name("li1")).click();
-
-        System.out.println("Checking Another Box");
-        driver.findElement(By.name("li3")).click();
-
-        System.out.println("Checking Another Box");
-        driver.findElement(By.name("li7")).click();
-
-        System.out.println("Checking Another Box");
-        driver.findElement(By.name("li8")).click();
-
-        System.out.println("Entering Text");
-        driver.findElement(By.id("sampletodotext")).sendKeys("Get Taste of Lambda and Stick to It");
-
-        driver.findElement(By.id("addbutton")).click();
-
-        System.out.println("Checking Another Box");
-        driver.findElement(By.name("li9")).click();
-
-        // Let's also assert that the todo we added is present in the list.
-
-        spanText = driver.findElementByXPath("/html/body/div/div/div/ul/li[9]/span").getText();
-        Assert.assertEquals("Get Taste of Lambda and Stick to It", spanText);
-        Status = "passed";
-        Thread.sleep(150);
-
-        System.out.println("TestFinished");
 
     }
 
     @AfterMethod
     public void tearDown() {
-        driver.executeScript("lambda-status=" + Status);
         driver.quit();
     }
 

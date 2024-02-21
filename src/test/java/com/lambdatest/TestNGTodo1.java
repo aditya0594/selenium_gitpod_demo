@@ -16,7 +16,6 @@ import org.testng.annotations.Test;
 public class TestNGTodo1 {
 
     private RemoteWebDriver driver;
-    private String Status = "failed";
 
     @BeforeMethod
     public void setup(Method m, ITestContext ctx) throws MalformedURLException {
@@ -42,7 +41,7 @@ public class TestNGTodo1 {
 
 
     @Test
-    public void basicTest() throws InterruptedException {
+    public void Scanario_1() throws InterruptedException {
         driver.manage().window().maximize();
         driver.get("https://www.lambdatest.com/selenium-playground");
 
@@ -73,8 +72,6 @@ public class TestNGTodo1 {
 
     @AfterMethod
     public void tearDown() {
-        driver.executeScript("lambdatest_executor: {\"action\": \"stepcontext\", \"arguments\": {\"data\": \"Adding Test Result and Closing Browser\", \"level\": \"info\"}}");
-        driver.executeScript("lambda-status=" + Status);
         driver.quit();
     }
 

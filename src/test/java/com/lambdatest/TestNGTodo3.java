@@ -1,10 +1,14 @@
 package com.lambdatest;
 
+import java.awt.*;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
@@ -40,67 +44,56 @@ public class TestNGTodo3 {
     }
 
     @Test
-    public void basicTest() throws InterruptedException {
-        String spanText;
-        System.out.println("Loading Url");
-        Thread.sleep(100);
-        driver.get("https://lambdatest.github.io/sample-todo-app/");
+    public void Scanario_3() throws InterruptedException, AWTException {
+        driver.manage().window().maximize();
+        driver.get("https://www.lambdatest.com/selenium-playground");
+        driver.findElement(By.linkText("Input Form Submit")).click();
 
-        System.out.println("Checking Box");
-        driver.findElement(By.name("li1")).click();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollBy(0,300);");
 
-        System.out.println("Checking Another Box");
-        driver.findElement(By.name("li2")).click();
 
-        System.out.println("Checking Box");
-        driver.findElement(By.name("li3")).click();
+        WebElement SubmitBtn = driver.findElement(By.xpath("//button[normalize-space()='Submit']"));
+        SubmitBtn.click();
+        Thread.sleep(5000);
 
-        System.out.println("Checking Another Box");
-        driver.findElement(By.name("li4")).click();
+        String errorMessage = driver.findElement(By.xpath("//input[@id='name']")).getAttribute("validationMessage");
+        System.out.println("errorMessage :"+ errorMessage);
+        Assert.assertEquals("Please fill out this field.",errorMessage);
+        Robot robot = new Robot();
 
-        driver.findElement(By.id("sampletodotext")).sendKeys(" List Item 6");
-        driver.findElement(By.id("addbutton")).click();
+        driver.findElement(By.name("name")).sendKeys("Aditya Pawar" + Keys.ENTER);
+        driver.findElement(By.xpath("//input[@id='inputEmail4']")).sendKeys("Aditya@mailinator.com" + Keys.ENTER);
+        driver.findElement(By.xpath("//input[@id='inputPassword4']")).sendKeys("Aditya@123");
+        driver.findElement(By.name("company")).sendKeys("XYZ");
+        driver.findElement(By.name("website")).sendKeys("www.google.com");
 
-        driver.findElement(By.id("sampletodotext")).sendKeys(" List Item 7");
-        driver.findElement(By.id("addbutton")).click();
 
-        driver.findElement(By.id("sampletodotext")).sendKeys(" List Item 8");
-        driver.findElement(By.id("addbutton")).click();
+        WebElement countryDropdown = driver.findElement(By.name("country"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", countryDropdown);
+        countryDropdown.sendKeys("United States");
+        Thread.sleep(5000);
 
-        System.out.println("Checking Another Box");
-        driver.findElement(By.name("li1")).click();
+        driver.findElement(By.name("city")).sendKeys("Nagpur");
 
-        System.out.println("Checking Another Box");
-        driver.findElement(By.name("li3")).click();
+        driver.findElement(By.name("address_line1")).sendKeys("Chatrapati");
 
-        System.out.println("Checking Another Box");
-        driver.findElement(By.name("li7")).click();
+        driver.findElement(By.name("address_line2")).sendKeys("Wardha road");
 
-        System.out.println("Checking Another Box");
-        driver.findElement(By.name("li8")).click();
+        driver.findElement(By.id("inputState")).sendKeys("Maharashtra");
 
-        System.out.println("Entering Text");
-        driver.findElement(By.id("sampletodotext")).sendKeys("Get Taste of Lambda and Stick to It");
+        driver.findElement(By.name("zip")).sendKeys("440015");
 
-        driver.findElement(By.id("addbutton")).click();
+        SubmitBtn.click();
 
-        System.out.println("Checking Another Box");
-        driver.findElement(By.name("li9")).click();
+        WebElement successMessage = driver.findElement(By.xpath("//p[@class='success-msg hidden']"));
+        assert successMessage.getText().equals("Thanks for contacting us, we will get back to you shortly.");
 
-        // Let's also assert that the todo we added is present in the list.
-
-        spanText = driver.findElementByXPath("/html/body/div/div/div/ul/li[9]/span").getText();
-        Assert.assertEquals("Get Taste of Lambda and Stick to It", spanText);
-        Status = "passed";
-        Thread.sleep(800);
-
-        System.out.println("TestFinished");
 
     }
 
     @AfterMethod
     public void tearDown() {
-        driver.executeScript("lambda-status=" + Status);
         driver.quit();
     }
 

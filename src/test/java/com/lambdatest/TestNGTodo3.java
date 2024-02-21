@@ -60,7 +60,6 @@ public class TestNGTodo3 {
         String errorMessage = driver.findElement(By.xpath("//input[@id='name']")).getAttribute("validationMessage");
         System.out.println("errorMessage :"+ errorMessage);
         Assert.assertEquals("Please fill out this field.",errorMessage);
-        Robot robot = new Robot();
 
         driver.findElement(By.name("name")).sendKeys("Aditya Pawar" + Keys.ENTER);
         driver.findElement(By.xpath("//input[@id='inputEmail4']")).sendKeys("Aditya@mailinator.com" + Keys.ENTER);

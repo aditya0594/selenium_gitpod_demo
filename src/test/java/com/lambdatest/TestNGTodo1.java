@@ -38,74 +38,36 @@ public class TestNGTodo1 {
         caps.setCapability("tags", Tags);
 
         driver = new RemoteWebDriver(new URL("https://" + username + ":" + authkey + hub), caps);
-
     }
+
 
     @Test
     public void basicTest() throws InterruptedException {
-        String spanText;
-        System.out.println("Loading Url");
-        driver.executeScript("lambdatest_executor: {\"action\": \"stepcontext\", \"arguments\": {\"data\": \"Opening WebApp\", \"level\": \"info\"}}");
+        driver.manage().window().maximize();
+        driver.get("https://www.lambdatest.com/selenium-playground");
 
-        driver.get("https://lambdatest.github.io/sample-todo-app/");
+        driver.findElement(By.xpath("//a[normalize-space()='Simple Form Demo']")).click();
+        Thread.sleep(1000);
+        String currentUrl = driver.getCurrentUrl();
+        if (currentUrl.contains("simple-form-demo")) {
+            System.out.println("URL validation passed for Scenario 1");
+        } else {
+            System.out.println("URL validation failed for Scenario 1");
+        }
 
-        driver.executeScript("lambdatest_executor: {\"action\": \"stepcontext\", \"arguments\": {\"data\": \"Checking List Items\", \"level\": \"info\"}}");
+        // 4. Create a variable for a string value E.g: “Welcome to LambdaTest”.
 
-        System.out.println("Checking Box");
-        driver.findElement(By.name("li1")).click();
+        String message = "Welcome to LambdaTest";
+        //5. Use this variable to enter values in the “Enter Message” text box.
+        driver.findElement(By.xpath("//input[@id='user-message']")).sendKeys(message);
 
-        System.out.println("Checking Another Box");
-        driver.findElement(By.name("li2")).click();
-
-        System.out.println("Checking Box");
-        driver.findElement(By.name("li3")).click();
-
-        System.out.println("Checking Another Box");
-        driver.findElement(By.name("li4")).click();
-
-        driver.executeScript("lambdatest_executor: {\"action\": \"stepcontext\", \"arguments\": {\"data\": \"Adding Items\", \"level\": \"info\"}}");
-
-        driver.findElement(By.id("sampletodotext")).sendKeys(" List Item 6");
-        driver.findElement(By.id("addbutton")).click();
-
-        driver.findElement(By.id("sampletodotext")).sendKeys(" List Item 7");
-        driver.findElement(By.id("addbutton")).click();
-
-        driver.findElement(By.id("sampletodotext")).sendKeys(" List Item 8");
-        driver.findElement(By.id("addbutton")).click();
-
-        driver.executeScript("lambdatest_executor: {\"action\": \"stepcontext\", \"arguments\": {\"data\": \"Checking More Items\", \"level\": \"info\"}}");
-
-        System.out.println("Checking Another Box");
-        driver.findElement(By.name("li1")).click();
-
-        System.out.println("Checking Another Box");
-        driver.findElement(By.name("li3")).click();
-
-        System.out.println("Checking Another Box");
-        driver.findElement(By.name("li7")).click();
-
-        System.out.println("Checking Another Box");
-        driver.findElement(By.name("li8")).click();
-        Thread.sleep(300);
-
-        driver.executeScript("lambdatest_executor: {\"action\": \"stepcontext\", \"arguments\": {\"data\": \"Adding and Verify List Items\", \"level\": \"info\"}}");
-        System.out.println("Entering Text");
-        driver.findElement(By.id("sampletodotext")).sendKeys("Get Taste of Lambda and Stick to It");
-
-        driver.findElement(By.id("addbutton")).click();
-
-        System.out.println("Checking Another Box");
-        driver.findElement(By.name("li9")).click();
-
-        // Let's also assert that the todo we added is present in the list.
-
-        spanText = driver.findElementByXPath("/html/body/div/div/div/ul/li[9]/span").getText();
-        Assert.assertEquals("Get Taste of Lambda and Stick to It", spanText);
-        Status = "passed";
-        Thread.sleep(150);
-
-        System.out.println("TestFinished");
+        driver.findElement(By.xpath("//button[@id='showInput']")).click();
+        String displayedMessage = driver.findElement(By.xpath("//p[@id='message']")).getText();
+        if (displayedMessage.equals(message)) {
+            System.out.println("Message validation passed for Scenario 1");
+        } else {
+            System.out.println("Message validation failed for Scenario 1");
+        }
 
     }
 

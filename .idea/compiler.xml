@@ -11,5 +11,8 @@
         <module name="appium-gitpod" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Gitpod_android_ios" target="10" />
+    </bytecodeTargetLevel>
   </component>
 </project>

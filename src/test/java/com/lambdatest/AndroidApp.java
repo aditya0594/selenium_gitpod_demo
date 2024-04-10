@@ -13,33 +13,31 @@ public class AndroidApp {
 
     String userName = System.getenv("LT_USERNAME") == null ? "username" : System.getenv("adityapawar180"); //Add username here
     String accessKey = System.getenv("LT_ACCESS_KEY") == null ? "accessKey" : System.getenv("6wud0mTK0TXmhC7F76FfTNByrGdUNLIIRtZ5eG8Oww7xYOkPYl"); //Add accessKey here
-    String app_id = System.getenv("LT_APP_ID") == null ? "lt://proverbial-android" : System.getenv("lt://APP1016043281712692782577734");      //Enter your LambdaTest App ID at the place of lt://proverbial-android
+    String app_id = System.getenv("LT_APP_ID") == null ? "lt://proverbial-android" : System.getenv("lt://APP1016061471712775866443742");      //Enter your LambdaTest App ID at the place of lt://proverbial-android
     String grid_url = System.getenv("LT_GRID_URL") == null ? "mobile-hub.lambdatest.com" : System.getenv("mobile-hub.lambdatest.com/wd/hub");
 
     AppiumDriver driver;
 
     @Test
     @Parameters(value = {"device", "version", "platform"})
-    public void AndroidApp1(String device, String version, String platform) {
+    public void AndroidApp1() {
         try {
             DesiredCapabilities capabilities = new DesiredCapabilities();
-            capabilities.setCapability("build", "Java TestNG");
-            capabilities.setCapability("name", platform + " " + device + " " + version);
-            capabilities.setCapability("deviceName", device);
-            capabilities.setCapability("platformVersion", version);
-            capabilities.setCapability("platformName", platform);
+            capabilities.setCapability("platformName", "android");
+            capabilities.setCapability("deviceName", "Galaxy S20");
+            capabilities.setCapability("platformVersion", "11");
+            capabilities.setCapability("app", "lt://APP10160161211712776311769271");
+            capabilities.setCapability("build", "Android_build");
+            capabilities.setCapability("autoGrantPermissions", true);
+            capabilities.setCapability("autoAcceptAlerts", true);
             capabilities.setCapability("isRealMobile", true);
-            //AppURL (Create from Wikipedia.apk sample in project)
-            capabilities.setCapability("app", app_id); //Enter your app url
-            capabilities.setCapability("deviceOrientation", "PORTRAIT");
             capabilities.setCapability("network", true);
             capabilities.setCapability("visual", true);
             capabilities.setCapability("devicelog", true);
-            capabilities.setCapability("autoGrantPermissions", true);
 
             //capabilities.setCapability("geoLocation", "HK");
 //@mobile-hub.lambdatest.com/wd/hub
-            String hub = "https://" + userName + ":" + accessKey + "@" + grid_url;
+            String hub = "https://adityapawar180:6wud0mTK0TXmhC7F76FfTNByrGdUNLIIRtZ5eG8Oww7xYOkPYl@mobile-hub.lambdatest.com/wd/hub";
             driver = new AppiumDriver(new URL(hub), capabilities);
             Thread.sleep(3000);
             // 1. Validate if the app is launched

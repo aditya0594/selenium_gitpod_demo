@@ -7,7 +7,7 @@
         <parameter name="platform" value="iOS"/>
         <parameter name="device" value="iPhone 12"/>
         <classes>
-            <class name="iOSApp"/>
+            <class name="com.lambdatest.iOSApp"/>
         </classes>
     </test>
 
@@ -16,7 +16,7 @@
         <parameter name="platform" value="iOS"/>
         <parameter name="device" value="iPhone 12"/>
         <classes>
-            <class name="iOSApp"/>
+            <class name="com.lambdatest.iOSApp"/>
         </classes>
     </test>
 </suite>

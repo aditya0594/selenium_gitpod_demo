@@ -1,8 +1,12 @@
 package com.lambdatest;
 
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.TouchAction;
+import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 
 import java.net.URL;
@@ -21,22 +25,29 @@ public class iOSApp {
 
         try {
             DesiredCapabilities capabilities = new DesiredCapabilities();
-            capabilities.setCapability("build", "Java TestNG");
-            capabilities.setCapability("name", platform + " " + device + " " + version);
-            capabilities.setCapability("deviceName", device);
-            capabilities.setCapability("platformVersion", version);
-            capabilities.setCapability("platformName", platform);
-            capabilities.setCapability("isRealMobile", true);
-            capabilities.setCapability("app", app_id); //Enter your app url
+            capabilities.setCapability("platformName", "ios");
+            capabilities.setCapability("deviceName", "iPhone 12 Pro");
+            capabilities.setCapability("platformVersion", "14");
+            capabilities.setCapability("app", "lt://APP10160241051712776822301893");
+            capabilities.setCapability("build", "IOS_build");
+            capabilities.setCapability("autoGrantPermissions", true);
+            capabilities.setCapability("autoAcceptAlerts", true);
+            capabilities.setCapability("isRealMobile", true); //Enter your app url
             capabilities.setCapability("network", true);
             capabilities.setCapability("visual", true);
             capabilities.setCapability("devicelog", true);
             //capabilities.setCapability("geoLocation", "HK");
 
-            String hub = "https://" + userName + ":" + accessKey + "@" + grid_url + "/wd/hub";
+            String hub = "https://adityapawar180:6wud0mTK0TXmhC7F76FfTNByrGdUNLIIRtZ5eG8Oww7xYOkPYl@mobile-hub.lambdatest.com/wd/hub";
             driver = new AppiumDriver(new URL(hub), capabilities);
-            System.out.println("App launched successfully: " + driver.isAppInstalled("APP_BUNDLE_ID"));
+            Boolean text = driver.findElement(By.xpath("//*[@name='Textbox']")).isDisplayed();
 
+            if(text == true){
+                System.out.println("App launched successfully: " + text);
+            }else
+            {
+                System.out.println("App launched successfully: " + text);
+            }
             // 2. Capture text from XCUIElementTypeTextView named "Textbox"
             String textBoxText = driver.findElement(By.xpath("//*[@name='Textbox']")).getText();
             System.out.println("Text captured from Textbox: " + textBoxText);
@@ -73,15 +84,24 @@ public class iOSApp {
             // Navigate back to previous page using the device's back button
 
             // 8. Navigate back to the previous page using the device's back button
-            driver.findElement(By.xpath("//*[@name=\"iphone.homebutton.radiowaves.left.and.right\"]")).click();
-
+            //WebDriverWait wait = new WebDriverWait(driver,5);
+            //wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.className("XCUIElementTypeButton"))));
+          //  driver.findElement(By.xpath("//*[@name='Back']")).click();
+            int startx = 0;
+            int starty = 47;
+            TouchAction action = new  TouchAction(driver);
+            action.tap(PointOption.point(startx, starty))
+                    .release()
+                    .perform();
+            Thread.sleep(3000);
             // 9. Click the "Browser" button to open the browser page
-            driver.findElement(By.name("Browser")).click();
+            driver.findElement(By.xpath("//*[@name='Browser']")).click();
             Thread.sleep(5000); // Wait for browser page to load
             // Click the "Search" button, enter "LambdaTest" in the search bar, and submit the search
-            driver.findElement(By.name("url")).click();
-            driver.findElement(By.name("url")).sendKeys("LambdaTest");
-            driver.findElement(By.name("Find")).click();
+            driver.findElement(By.xpath("//*[@name='url']")).click();
+            driver.findElement(By.xpath("//*[@name='url']")).sendKeys("LambdaTest");
+            Thread.sleep(3000);
+            driver.findElement(By.xpath("//*[@name='Find']")).click();
             Thread.sleep(5000); // Wait for search results
 
             // 10. Verify the status of the test, marking it as "passed."
